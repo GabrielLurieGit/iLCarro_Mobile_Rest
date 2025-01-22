@@ -22,6 +22,8 @@ public class RegistrationScreen extends BaseScreen{
     AndroidElement checkboxReg;
     @FindBy(id = "com.telran.ilcarro:id/regBtn")
     AndroidElement regBtn;
+    @FindBy(id = "android:id/message")
+    AndroidElement errorMessage;
 
 
     public RegistrationScreen fillRegForm(UserDTO user){
@@ -30,7 +32,6 @@ public class RegistrationScreen extends BaseScreen{
         inputEmail.sendKeys(user.getUsername());
         inputPassword.sendKeys(user.getPassword());
         signCheckbox();
-        clickRegButton();
         return this;
     }
 
@@ -42,6 +43,18 @@ public class RegistrationScreen extends BaseScreen{
         regBtn.click();
         return new SearchScreen(driver);
    }
+
+   public RegistrationScreen clickRegButtonNegative(){
+       regBtn.click();
+       return this;
+   }
+
+
+   public boolean validateErrorMessage(String message){
+      return textInElementPresent(errorMessage,message,5);
+   }
+
+
 
 
 
