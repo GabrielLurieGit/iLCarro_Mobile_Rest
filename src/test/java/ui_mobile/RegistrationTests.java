@@ -9,13 +9,13 @@ import org.testng.annotations.Test;
 import screens.RegistrationScreen;
 import screens.SearchScreen;
 import screens.SplashScreen;
-
+import static helper.RandomUtils.*;
 import java.util.Random;
 
 public class RegistrationTests extends AppiumConfig implements MessageConstantsInterface {
 
     @BeforeMethod
-    public void beforeTest(){
+    public void beforeRegistration(){
         new SplashScreen(driver);
         new SearchScreen(driver).goToRegistrationScreen();
     }
@@ -24,9 +24,9 @@ public class RegistrationTests extends AppiumConfig implements MessageConstantsI
     public void registrationPositiveTest(){
         int i = new Random().nextInt(100)+100;
         UserDTO user = UserDTO.builder()
-                .firstName("Galen")
-                .lastName("Marek")
-                .username("starkiller"+i+"@gmail.com")
+                .firstName(generateString(5))
+                .lastName(generateString(10))
+                .username(generateEmail(10))
                 .password("Qwerty1234!")
                 .build();
         Assert.assertTrue(new RegistrationScreen(driver)
