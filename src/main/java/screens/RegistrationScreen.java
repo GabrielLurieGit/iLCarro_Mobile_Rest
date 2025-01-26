@@ -31,12 +31,12 @@ public class RegistrationScreen extends BaseScreen{
         inputLastName.sendKeys(user.getLastName());
         inputEmail.sendKeys(user.getUsername());
         inputPassword.sendKeys(user.getPassword());
-        signCheckbox();
         return this;
     }
 
-    private void signCheckbox(){
+    public RegistrationScreen selectCheckbox(){
         checkboxReg.click();
+        return this;
     }
 
    public SearchScreen clickRegButton(){

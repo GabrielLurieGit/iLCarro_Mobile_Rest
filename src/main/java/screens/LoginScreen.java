@@ -17,6 +17,9 @@ public class LoginScreen extends BaseScreen{
     @FindBy(id = "com.telran.ilcarro:id/loginBtn")
     AndroidElement loginBtn;
 
+    @FindBy(id = "android:id/message")
+    AndroidElement errorMessage;
+
     public LoginScreen loginForm(UserDTO user){
         inputEmail.sendKeys(user.getUsername());
         inputPassword.sendKeys(user.getPassword());
@@ -28,7 +31,14 @@ public class LoginScreen extends BaseScreen{
         return new SearchScreen(driver);
     }
 
+    public LoginScreen clickLoginBtnNegative(){
+        loginBtn.click();
+        return this;
+    }
 
+    public boolean validateErrorMessage(String message){
+        return textInElementPresent(errorMessage,message,5);
+    }
 
 
 }

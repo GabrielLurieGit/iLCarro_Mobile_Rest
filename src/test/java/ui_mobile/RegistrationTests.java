@@ -2,6 +2,7 @@ package ui_mobile;
 
 import config.AppiumConfig;
 import dto.UserDTO;
+import data_provider.DataProvider;
 import interfaces.MessageConstantsInterface;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -31,6 +32,7 @@ public class RegistrationTests extends AppiumConfig implements MessageConstantsI
                 .build();
         Assert.assertTrue(new RegistrationScreen(driver)
                 .fillRegForm(user)
+                .selectCheckbox()
                 .clickRegButton()
                 .validateRegSuccessMessage(SUCCESSFULL_REGISTRATION));
     }
@@ -45,6 +47,7 @@ public class RegistrationTests extends AppiumConfig implements MessageConstantsI
                 .build();
       Assert.assertTrue(new RegistrationScreen(driver)
                 .fillRegForm(user)
+                .selectCheckbox()
                 .clickRegButtonNegative()
                 .validateErrorMessage(MISSING_FIELD));
     }
@@ -59,23 +62,55 @@ public class RegistrationTests extends AppiumConfig implements MessageConstantsI
                 .build();
       Assert.assertTrue(new RegistrationScreen(driver)
                 .fillRegForm(user)
+                .selectCheckbox()
                 .clickRegButtonNegative()
                 .validateErrorMessage(INVALID_EMAIL));
     }
 
-    @Test
-    public void registrationNegativeTest_InvalidPassword(){
+    @Test(dataProvider = "registrationInvalidPasswordData",dataProviderClass = DataProvider.class)
+    public void registrationNegativeTest_InvalidPassword(String password){
         UserDTO user = UserDTO.builder()
                 .firstName("Galen")
                 .lastName("Marek")
                 .username("starkiller@gmail.com")
-                .password("Qwe12!")
+                .password(password)
+                .build();
+        Assert.assertTrue(new RegistrationScreen(driver)
+                .fillRegForm(user)
+                .selectCheckbox()
+                .clickRegButtonNegative()
+                .validateErrorMessage(INVALID_PASSWORD));
+    }
+
+    @Test
+    public void registrationNegativeTest_WO_Checkbox(){
+        UserDTO user = UserDTO.builder()
+                .firstName("Galen")
+                .lastName("Marek")
+                .username("starkiller003@gmail.com")
+                .password("Qwerty1234!")
                 .build();
         Assert.assertTrue(new RegistrationScreen(driver)
                 .fillRegForm(user)
                 .clickRegButtonNegative()
-                .validateErrorMessage(INVALID_PASSWORD));
+                .validateErrorMessage(MISSING_FIELD));
     }
+
+    @Test
+    public void registrationNegativeTest_UserAlreadyExists(){
+        UserDTO user = UserDTO.builder()
+                .firstName("Galen")
+                .lastName("Marek")
+                .username("bigbrother@gmail.com")
+                .password("Qwerty1234!")
+                .build();
+        Assert.assertTrue(new RegistrationScreen(driver)
+                .fillRegForm(user)
+                .selectCheckbox()
+                .clickRegButtonNegative()
+                .validateErrorMessage(USER_ALREADY_EXISTS));
+    }
+
 
 
 
