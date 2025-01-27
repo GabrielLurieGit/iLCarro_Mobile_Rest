@@ -36,9 +36,6 @@ public class LoginScreen extends BaseScreen{
         return this;
     }
 
-    public boolean validateErrorMessage(String message){
-        return textInElementPresent(errorMessage,message,5);
-    }
 
 
 }

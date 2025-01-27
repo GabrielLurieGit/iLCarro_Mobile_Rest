@@ -1,7 +1,8 @@
 package data_provider;
 
-public class DataProvider {
-    @org.testng.annotations.DataProvider(name = "registrationInvalidPasswordData")
+import org.testng.annotations.DataProvider;
+public class TestDataProvider {
+    @DataProvider(name = "registrationInvalidPasswordData")
     public Object[][] registrationInvalidPasswordData(){
 
         return new Object[][]{

@@ -2,11 +2,12 @@ package ui_mobile;
 
 import config.AppiumConfig;
 import dto.UserDTO;
-import data_provider.DataProvider;
+import data_provider.TestDataProvider;
 import interfaces.MessageConstantsInterface;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import screens.ErrorScreen;
 import screens.RegistrationScreen;
 import screens.SearchScreen;
 import screens.SplashScreen;
@@ -45,11 +46,11 @@ public class RegistrationTests extends AppiumConfig implements MessageConstantsI
                 .username("starkiller003@gmail.com")
                 .password("Qwerty1234!")
                 .build();
-      Assert.assertTrue(new RegistrationScreen(driver)
+      new RegistrationScreen(driver)
                 .fillRegForm(user)
                 .selectCheckbox()
-                .clickRegButtonNegative()
-                .validateErrorMessage(MISSING_FIELD));
+                .clickRegButtonNegative();
+      Assert.assertTrue(new ErrorScreen(driver).validateErrorMessage(MISSING_FIELD));
     }
 
     @Test
@@ -60,14 +61,14 @@ public class RegistrationTests extends AppiumConfig implements MessageConstantsI
                 .username("starkiller")
                 .password("Qwerty1234!")
                 .build();
-      Assert.assertTrue(new RegistrationScreen(driver)
+      new RegistrationScreen(driver)
                 .fillRegForm(user)
                 .selectCheckbox()
-                .clickRegButtonNegative()
-                .validateErrorMessage(INVALID_EMAIL));
+                .clickRegButtonNegative();
+        Assert.assertTrue(new ErrorScreen(driver).validateErrorMessage(INVALID_EMAIL));
     }
 
-    @Test(dataProvider = "registrationInvalidPasswordData",dataProviderClass = DataProvider.class)
+    @Test(dataProvider = "registrationInvalidPasswordData",dataProviderClass = TestDataProvider.class)
     public void registrationNegativeTest_InvalidPassword(String password){
         UserDTO user = UserDTO.builder()
                 .firstName("Galen")
@@ -75,11 +76,11 @@ public class RegistrationTests extends AppiumConfig implements MessageConstantsI
                 .username("starkiller@gmail.com")
                 .password(password)
                 .build();
-        Assert.assertTrue(new RegistrationScreen(driver)
+        new RegistrationScreen(driver)
                 .fillRegForm(user)
                 .selectCheckbox()
-                .clickRegButtonNegative()
-                .validateErrorMessage(INVALID_PASSWORD));
+                .clickRegButtonNegative();
+        Assert.assertTrue(new ErrorScreen(driver).validateErrorMessage(INVALID_PASSWORD));
     }
 
     @Test
@@ -90,10 +91,10 @@ public class RegistrationTests extends AppiumConfig implements MessageConstantsI
                 .username("starkiller003@gmail.com")
                 .password("Qwerty1234!")
                 .build();
-        Assert.assertTrue(new RegistrationScreen(driver)
+        new RegistrationScreen(driver)
                 .fillRegForm(user)
-                .clickRegButtonNegative()
-                .validateErrorMessage(MISSING_FIELD));
+                .clickRegButtonNegative();
+        Assert.assertTrue(new ErrorScreen(driver).validateErrorMessage(MISSING_FIELD));
     }
 
     @Test
@@ -104,11 +105,11 @@ public class RegistrationTests extends AppiumConfig implements MessageConstantsI
                 .username("bigbrother@gmail.com")
                 .password("Qwerty1234!")
                 .build();
-        Assert.assertTrue(new RegistrationScreen(driver)
+        new RegistrationScreen(driver)
                 .fillRegForm(user)
                 .selectCheckbox()
-                .clickRegButtonNegative()
-                .validateErrorMessage(USER_ALREADY_EXISTS));
+                .clickRegButtonNegative();
+        Assert.assertTrue(new ErrorScreen(driver).validateErrorMessage(USER_ALREADY_EXISTS));
     }
 
 

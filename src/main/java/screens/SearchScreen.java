@@ -19,6 +19,9 @@ public class SearchScreen extends BaseScreen{
     @FindBy(xpath = "//*[@text='Login success!']")
     AndroidElement logSuccessMsg;
 
+    @FindBy(xpath = "//*[@text='My Cars']")
+    AndroidElement myCarsBtn;
+
 
     public void goToRegistrationScreen(){
         clickWait(moreOptionsBtn,5);
@@ -30,11 +33,17 @@ public class SearchScreen extends BaseScreen{
     }
 
 
-    public void goToLoginScreen() {
+    public LoginScreen goToLoginScreen() {
         clickWait(moreOptionsBtn,5);
         clickWait(loginBtn,5);
+        return new LoginScreen(driver);
     }
 
+    public MyCarsScreen goToMyCarsScreen(){
+        clickWait(moreOptionsBtn,5);
+        clickWait(myCarsBtn,5);
+        return new MyCarsScreen(driver);
+    }
     public boolean validateLogSuccessMessage(String message){
         return textInElementPresent(logSuccessMsg,message,5);
     }

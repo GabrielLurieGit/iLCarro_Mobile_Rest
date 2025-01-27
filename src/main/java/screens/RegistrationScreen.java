@@ -50,11 +50,6 @@ public class RegistrationScreen extends BaseScreen{
    }
 
 
-   public boolean validateErrorMessage(String message){
-      return textInElementPresent(errorMessage,message,5);
-   }
-
-
 
 
 
