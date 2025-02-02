@@ -3,7 +3,7 @@ package ui_mobile;
 import config.AppiumConfig;
 import dto.UserDTO;
 import data_provider.TestDataProvider;
-import interfaces.MessageConstantsInterface;
+import interfaces.ValidateLogReg;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -14,7 +14,7 @@ import screens.SplashScreen;
 import static helper.RandomUtils.*;
 import java.util.Random;
 
-public class RegistrationTests extends AppiumConfig implements MessageConstantsInterface {
+public class RegistrationTests extends AppiumConfig implements ValidateLogReg {
 
     @BeforeMethod
     public void beforeRegistration(){

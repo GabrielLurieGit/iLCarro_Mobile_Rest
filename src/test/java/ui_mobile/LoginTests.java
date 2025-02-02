@@ -2,7 +2,7 @@ package ui_mobile;
 
 import config.AppiumConfig;
 import dto.UserDTO;
-import interfaces.MessageConstantsInterface;
+import interfaces.ValidateLogReg;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -11,7 +11,7 @@ import screens.LoginScreen;
 import screens.SearchScreen;
 import screens.SplashScreen;
 
-public class LoginTests extends AppiumConfig implements MessageConstantsInterface {
+public class LoginTests extends AppiumConfig implements ValidateLogReg {
 
     @BeforeMethod
     public void beforeLogin() {
@@ -78,5 +78,7 @@ public class LoginTests extends AppiumConfig implements MessageConstantsInterfac
                 .clickLoginBtnNegative();
         Assert.assertTrue(new ErrorScreen(driver).validateErrorMessage(LOGIN_OR_PASS_INCORECT));
     }
+
+
 
 }

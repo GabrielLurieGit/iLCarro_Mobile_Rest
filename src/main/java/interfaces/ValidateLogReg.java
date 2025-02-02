@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface MessageConstantsInterface {
+public interface ValidateLogReg {
     String SUCCESSFULL_REGISTRATION = "Registration success!";
     String SUCCESSFULL_LOGIN = "Login success!";
     String MISSING_FIELD = "All fields must be filled and agree terms";
@@ -9,7 +9,6 @@ public interface MessageConstantsInterface {
             " Can contain special characters [@$#^&*!]}";
     String USER_ALREADY_EXISTS = "User already exists";
     String LOGIN_OR_PASS_INCORECT = "Login or Password incorrect";
-
     String USERNAME = "bigbrother2@gmail.com";
     String PASSWORD = "Tr43123456!";
 

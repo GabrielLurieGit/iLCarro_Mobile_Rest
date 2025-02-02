@@ -1,17 +1,15 @@
 package screens;
 
-import dto.BookedDto;
 import dto.CarDTO;
 import enums.FuelType;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import enums.FuelType.*;
-import java.util.List;
 
 public class AddNewCarScreen extends BaseScreen{
     public AddNewCarScreen(AppiumDriver<AndroidElement> driver) {
@@ -38,10 +36,12 @@ public class AddNewCarScreen extends BaseScreen{
     AndroidElement inputSeats;
     @FindBy(id = "com.telran.ilcarro:id/editAbout")
     AndroidElement inputAbout;
+    @FindBy(id = "com.telran.ilcarro:id/addCarBtn")
+    AndroidElement addCarBtn;
+
 
 
     public AddNewCarScreen addNewCar(CarDTO car) {
-
 inputSerialNumber.sendKeys(car.getSerialNumber());
 inputManufacture.sendKeys(car.getManufacture());
 inputModel.sendKeys(car.getModel());
@@ -52,18 +52,34 @@ int height = driver.manage().window().getSize().getHeight();
 int wight = driver.manage().window().getSize().getWidth();
 System.out.println(height+"X"+wight);
 TouchAction<?> touchAction = new TouchAction<>(driver);
-//touchAction.longPress()
+touchAction.longPress(PointOption.point(5,height/6*5))
+                .moveTo(PointOption.point(5,height/6))
+                .release().perform();
+
 inputCarClass.sendKeys(car.getCarClass());
 typeFuel(FuelType.GAS);
 inputYear.sendKeys(car.getYear());
 inputSeats.sendKeys(car.getSeats()+"");
 inputAbout.sendKeys(car.getAbout());
-
-
-
-
         return this;
     }
+
+    public MyCarsScreen clickAddCarBtn(){
+        addCarBtn.click();
+        return new MyCarsScreen(driver);
+    }
+
+    public AddNewCarScreen validateIntEmptySeat(){
+        inputSeats.clear();
+        return this;
+    }
+
+    public AddNewCarScreen clickAddCarBtnNegative(){
+        addCarBtn.click();
+        return this;
+    }
+
+    
 
     private void typeFuel(FuelType fuel) {
         inputFuel.click();
