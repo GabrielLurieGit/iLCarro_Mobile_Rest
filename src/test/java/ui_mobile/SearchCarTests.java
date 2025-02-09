@@ -2,6 +2,7 @@ package ui_mobile;
 
 import config.AppiumConfig;
 import dto.SearchDTO;
+import helper.RetryAnalyzer;
 import interfaces.ValidateLogReg;
 import interfaces.ValidateSearchAddCar;
 import org.testng.Assert;
@@ -10,7 +11,7 @@ import screens.ErrorScreen;
 import screens.SearchScreen;
 
 public class SearchCarTests extends AppiumConfig implements ValidateSearchAddCar {
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public static void searchCarPositiveTest(){
         SearchDTO searchDTO = SearchDTO.builder()
                 .city("Rehovot")
@@ -23,7 +24,7 @@ public class SearchCarTests extends AppiumConfig implements ValidateSearchAddCar
                 .validateResultTitle("Search result"));
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public static void searchCarPositiveTest_UsingCalendar(){
         SearchDTO searchDTO = SearchDTO.builder()
                 .city("Rehovot")
@@ -36,7 +37,7 @@ public class SearchCarTests extends AppiumConfig implements ValidateSearchAddCar
                 .validateResultTitle("Search result"));
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public static void searchCarNegativeTest_WO_Location(){
         SearchDTO searchDTO = SearchDTO.builder()
                 .city("")
@@ -49,7 +50,7 @@ public class SearchCarTests extends AppiumConfig implements ValidateSearchAddCar
        Assert.assertTrue(new ErrorScreen(driver).validateErrorMessage(SEARCH_EMPTY_CITY));
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public static void searchCarNegativeTest_InvalidToDate(){
         SearchDTO searchDTO = SearchDTO.builder()
                 .city("Rehovot")
@@ -62,7 +63,7 @@ public class SearchCarTests extends AppiumConfig implements ValidateSearchAddCar
         Assert.assertTrue(new ErrorScreen(driver).validateErrorMessage(TO_BEFORE_FROM));
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public static void searchCarNegativeTest_InvalidFromDate(){
         SearchDTO searchDTO = SearchDTO.builder()
                 .city("Rehovot")

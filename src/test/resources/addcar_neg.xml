@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Test Suite">
+    <test name="Adding New Car Tests">
+        <classes>
+            <class name="ui_mobile.AddNewCarTests">
+                <methods>
+                    <include name="addNewCarNegativeTest_WO_SNumber_Manufacture_Model_City_Price" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>

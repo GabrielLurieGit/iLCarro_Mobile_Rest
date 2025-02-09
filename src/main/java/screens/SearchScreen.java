@@ -85,6 +85,9 @@ public class SearchScreen extends BaseScreen{
             inputFrom.sendKeys(searchDTO.getStartDate());
             inputTo.sendKeys(searchDTO.getEndDate());
         }
+        else {
+            throw new IllegalArgumentException("Unsupported typing method");
+        }
         return this;
     }
 
@@ -107,11 +110,15 @@ public class SearchScreen extends BaseScreen{
         String day = String.valueOf(localDate.getDayOfMonth());
         String month = localDate.getMonth().getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
         String year = String.valueOf(localDate.getYear());
+
         if (element == inputFrom){
             clickWait(inputFrom, 5);
         }else if (element == inputTo){
             clickWait(inputTo,5);
+        }else {
+            throw new IllegalArgumentException("Invalid element");
         }
+
         yearPicker.click();
         WebDriverWait wait = new WebDriverWait(driver, 10);
        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(

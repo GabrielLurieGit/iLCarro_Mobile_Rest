@@ -1,10 +1,15 @@
 package ui_mobile;
 
 import config.AppiumConfig;
+import config.CarController;
+import data_provider.TestDataProvider;
 import dto.CarDTO;
+import dto.CarsDto;
 import dto.UserDTO;
+import helper.RetryAnalyzer;
 import interfaces.ValidateLogReg;
 import interfaces.ValidateSearchAddCar;
+import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -31,7 +36,7 @@ public class AddNewCarTests extends AppiumConfig implements ValidateLogReg, Vali
                 .goToMyCarsScreen();
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void addNewCarPositiveTest(){
         CarDTO carDTO = CarDTO.builder()
                 .serialNumber("num-"+generatePhone(5)) // метод для генерации номеров телефона используется для серийников
@@ -54,7 +59,7 @@ public class AddNewCarTests extends AppiumConfig implements ValidateLogReg, Vali
 
 
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void addNewCarPositiveTestValidateAddedCar(){
         CarDTO carDTO = CarDTO.builder()
                 .serialNumber("num-"+generatePhone(5)) // метод для генерации номеров телефона используется для серийников
@@ -75,29 +80,67 @@ public class AddNewCarTests extends AppiumConfig implements ValidateLogReg, Vali
                 .scrollToLastElementAuto(),carDTO.getSerialNumber());
     }
 
-
-    @Test
-    public void addNewCarNegativeTest_WO_SerialNumber(){ //Serial number, Manufacture, Model, City, Price per day TestDataProvider is in development
+    @Test(retryAnalyzer = RetryAnalyzer.class)
+    public void addNewCarPositiveTestValidateRestApi(){
         CarDTO carDTO = CarDTO.builder()
-                .serialNumber("")
-                .manufacture("ZAZ")
-                .model("969")
+                .serialNumber("num-"+generatePhone(5)) // метод для генерации номеров телефона используется для серийников
+                .manufacture("Volvo")
+                .model("100")
                 .city("Haifa")
-                .pricePerDay(333.33)
-                .carClass("Hi")
+                .pricePerDay(1000.99)
+                .carClass("C")
                 .fuel(FuelType.GAS.getFuel())
-                .year("1975")
-                .seats(4)
-                .about("best of the best")
+                .year("1999")
+                .seats(5)
+                .about("best of the best car volvo")
+                .build();
+        new MyCarsScreen(driver)
+                .goToAddNewCarScreen()
+                .addNewCar(carDTO)
+                .clickAddCarBtn();
+        CarController carController = new CarController();
+        carController.login();
+        Response response = carController.getUserCars(carController.tokenDto.getAccessToken());
+        CarDTO[] arrayCar = response.body().as(CarsDto.class).getCars();
+        int index = 0;
+        for (int i = 0; i< arrayCar.length;i++){
+            if (arrayCar[i].equals(carDTO)){
+                System.out.println("=car.equals(CarDTO)=");
+                index =i;
+                break;
+            }
+        }
+        Assert.assertEquals(carDTO,arrayCar[index]);
+    }
+
+
+
+
+
+    @Test(retryAnalyzer = RetryAnalyzer.class,dataProvider = "invalidCarData",dataProviderClass = TestDataProvider.class)
+    public void addNewCarNegativeTest_WO_SNumber_Manufacture_Model_City_Price(
+            String serialNumber, String manufacture, String model, String city, double pricePerDay,
+            String carClass, String fuel, String year, int seats, String about, String expectedErrorMessage){ //Serial number, Manufacture, Model, City, Price per day TestDataProvider is in development
+        CarDTO carDTO = CarDTO.builder()
+                .serialNumber(serialNumber)
+                .manufacture(manufacture)
+                .model(model)
+                .city(city)
+                .pricePerDay(pricePerDay)
+                .carClass(carClass)
+                .fuel(fuel)
+                .year(year)
+                .seats(seats)
+                .about(about)
                 .build();
         new MyCarsScreen(driver)
                 .goToAddNewCarScreen()
                 .addNewCar(carDTO)
                 .clickAddCarBtnNegative();
-        new ErrorScreen(driver).validateErrorMessage(MISSING_SERIAL_MANUFACT_MODEL_CITY_PRICE);
+        new ErrorScreen(driver).validateErrorMessage(expectedErrorMessage);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void addNewCarNegativeTest_WO_CarClass(){
         CarDTO carDTO = CarDTO.builder()
                 .serialNumber("serial"+generatePhone(5))
@@ -118,7 +161,7 @@ public class AddNewCarTests extends AppiumConfig implements ValidateLogReg, Vali
         new ErrorScreen(driver).validateErrorMessage(CAR_CLASS_EMPTY);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void addNewCarNegativeTest_CityInvalidName(){
         CarDTO carDTO = CarDTO.builder()
                 .serialNumber("serial"+generatePhone(5))
@@ -139,7 +182,7 @@ public class AddNewCarTests extends AppiumConfig implements ValidateLogReg, Vali
         new ErrorScreen(driver).validateErrorMessage("City "+carDTO.getCity()+" not available");
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void addNewCarNegativeTest_WO_Year() {
         CarDTO carDTO = CarDTO.builder()
                 .serialNumber("serial" + generatePhone(5))
@@ -160,7 +203,7 @@ public class AddNewCarTests extends AppiumConfig implements ValidateLogReg, Vali
         new ErrorScreen(driver).validateErrorMessage(YEAR_EMPTY);
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void addNewCarNegativeTest_InvalidSeatNumber() {
         CarDTO carDTO = CarDTO.builder()
                 .serialNumber("serial" + generatePhone(5))

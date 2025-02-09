@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.util.List;
+import java.util.Objects;
+
 @Getter
 @Setter
 @Builder
@@ -28,4 +30,17 @@ public class CarDTO {
     private String image; //": "string",
     private String owner; //": "string",
     private List<BookedDto> bookedPeriods;
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CarDTO carDTO)) return false;
+        return getSeats() == carDTO.getSeats() && Double.compare(getPricePerDay(), carDTO.getPricePerDay()) == 0 && Objects.equals(getSerialNumber(), carDTO.getSerialNumber()) && Objects.equals(getManufacture(), carDTO.getManufacture()) && Objects.equals(getModel(), carDTO.getModel()) && Objects.equals(getYear(), carDTO.getYear()) && Objects.equals(getFuel(), carDTO.getFuel()) && Objects.equals(getCarClass(), carDTO.getCarClass()) && Objects.equals(getAbout(), carDTO.getAbout()) && Objects.equals(getCity(), carDTO.getCity());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getSerialNumber(), getManufacture(), getModel(), getYear(), getFuel(), getSeats(), getCarClass(), getPricePerDay(), getAbout(), getCity());
+    }
 }

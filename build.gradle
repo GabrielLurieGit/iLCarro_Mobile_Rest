@@ -31,9 +31,17 @@ test {
     useTestNG()
 }
 
-task data_provider_task(type: Test){
+task data_provider_task_reg_neg(type: Test){
     useTestNG(){
         suites 'src/test/resources/testng.xml'
+
+    }
+
+}
+
+task data_provider_task_addcar_neg(type: Test){
+    useTestNG(){
+        suites 'src/test/resources/addcar_neg.xml'
     }
 
 }
